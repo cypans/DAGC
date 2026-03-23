@@ -47,8 +47,8 @@ class GraphConv(nn.Module):
         :param edge_index: 图的边
         :return: 输出特征
         """
-        # 计算 A 的幂次 (I, A, A^2, ...)
-        # 创建稀疏矩阵，指定边权重为 1
+        
+        
         value = torch.ones(edge_index.size(1), dtype=torch.float32, device=edge_index.device)
         adj = torch_sparse.SparseTensor(row=edge_index[0], col=edge_index[1], value=value, sparse_sizes=(x.size(1), x.size(1)))
         adj = normalize_adj(adj)  # 归一化 A
@@ -68,8 +68,8 @@ class GraphConv(nn.Module):
 
         for i in range(self.out_channels):  # 对每个输出通道
             for j in range(self.in_channels):  # 对每个输入通道
-                for m in range(self.k+1):  # 对每个 A^m
-                    # 计算卷积: A^m * Wk * x 并加权
+                for m in range(self.k+1):  
+                    
                     out[i, :, :] += torch_sparse.matmul(powers[m], x[j, :, :]) @ self.W[i][j] * self.params[i][j][m]   #  聚合每个输出通道的所有输入通道
         # out [out_channels,num_nodes,feat_dim]
         # return self.bn(out.permute(1, 0, 2)).permute(1, 0, 2)
