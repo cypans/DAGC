@@ -25,8 +25,7 @@ class GNN(nn.Module):
         self.lin2 = nn.Linear(node_feat_dim, int(leaf*out_feat_dim))  # dataset.num_classes
 
     def reset_params(self):
-        """递归重置所有子模块的参数,函数名不能与reset_parameters重名，不然会无限循环"""
-        for module in self.modules():  # 遍历当前模块及所有子模块,包括linear，rnn那些.也包括本身，所以不能重名
+        for module in self.modules():  
             if hasattr(module, 'reset_parameters'):  # 检查模块是否有 reset_parameters 方法（linear，RNN都有）
                 module.reset_parameters()
 
